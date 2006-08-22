@@ -3,7 +3,7 @@
 
 ;; Copyright (C) 2006  Free Software Foundation, Inc.
 
-;; Author: Yoshiki Kurihara <kurihara@livedoor.jp>
+;; Author: Yoshiki Kurihara <kurihara@cpan.org>
 ;; Keywords: 
 
 ;; This file is free software; you can redistribute it and/or modify
