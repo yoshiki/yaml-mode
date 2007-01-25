@@ -8,6 +8,7 @@
 	  yaml-bare-scalar-re
 	  yaml-block-literal-base-re
 	* Fixed little bugs #1
+
 0.0.2  Fri Aug 25 18:04:01 2006 JST
 	- Patch from Marshall T. Vandegrift. Added lots of features.
 	* Added face used for YAML node anchors and aliases to
