@@ -5,7 +5,7 @@
 ;; Author: Yoshiki Kurihara <kurihara@cpan.org>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Keywords: data yaml
-;; Version: 0.0.2
+;; Version: 0.0.3
 
 ;; This file is not part of Emacs
 
@@ -107,12 +107,12 @@ that key is pressed to begin a block literal."
 
 ;; Constants
 
-(defconst yaml-mode-version "0.0.2" "Version of `yaml-mode.'")
+(defconst yaml-mode-version "0.0.3" "Version of `yaml-mode.'")
 
 (defconst yaml-blank-line-re "^ *$"
   "Regexp matching a line containing only (valid) whitespace.")
 
-(defconst yaml-comment-re "\\(?:^\\|\\s-+\\)\\(#.*\\)"
+(defconst yaml-comment-re "\\(#*.*\\)"
   "Regexp matching a line containing a YAML comment or delimiter.")
 
 (defconst yaml-directive-re "^\\(?:--- \\)? *%\\(\\w+\\)"
@@ -128,7 +128,7 @@ that key is pressed to begin a block literal."
   "Rexexp matching a YAML tag.")
 
 (defconst yaml-bare-scalar-re
-  "\\(?:[^-:,#!\n ]\\|[^#!\n ]\\S-\\)[^\n]*?"
+  "\\(?:[^-:,#!\n{\\[ ]\\|[^#!\n{\\[ ]\\S-\\)[^#\n]*?"
   "Rexexp matching a YAML bare scalar.")
 
 (defconst yaml-hash-key-re
@@ -147,7 +147,7 @@ that key is pressed to begin a block literal."
   (concat ".*: *\\(?:&.*\\|{ *\\|" yaml-tag-re " *\\)?$")
   "Regexp matching a line beginning a YAML nested structure.")
 
-(defconst yaml-block-literal-base-re " *[>|][-+0-9]* *\n"
+(defconst yaml-block-literal-base-re " *[>|][-+0-9]* *\\(?:\n\\|\\'\\)"
   "Regexp matching the substring start of a block literal.")
 
 (defconst yaml-block-literal-re
@@ -196,7 +196,8 @@ that key is pressed to begin a block literal."
   (setq yaml-mode-syntax-table (make-syntax-table))
   (modify-syntax-entry ?\' "\"" yaml-mode-syntax-table)
   (modify-syntax-entry ?\" "\"" yaml-mode-syntax-table)
-  (modify-syntax-entry ?# "." yaml-mode-syntax-table)
+  (modify-syntax-entry ?# "<" yaml-mode-syntax-table)
+  (modify-syntax-entry ?\n ">" yaml-mode-syntax-table)
   (modify-syntax-entry ?\\ "\\" yaml-mode-syntax-table)
   (modify-syntax-entry ?- "." yaml-mode-syntax-table)
   (modify-syntax-entry ?_ "_" yaml-mode-syntax-table)
@@ -211,8 +212,8 @@ that key is pressed to begin a block literal."
   "Simple mode to edit YAML.
 
 \\{yaml-mode-map}"
-  (set (make-local-variable 'comment-start) "\\(?:^\\|\\s-+\\)#")
-  (set (make-local-variable 'comment-start-skip) "\\(^\\|\\s-+\\)#+ *")
+  (set (make-local-variable 'comment-start) "# ")
+  (set (make-local-variable 'comment-start-skip) "#+ *")
   (set (make-local-variable 'indent-line-function) 'yaml-indent-line)
   (set (make-local-variable 'font-lock-defaults)
        '(yaml-font-lock-keywords
@@ -227,8 +228,8 @@ that key is pressed to begin a block literal."
     (cons yaml-comment-re '(1 font-lock-comment-face))
     (cons yaml-constant-scalars-re '(1 font-lock-constant-face))
     (cons yaml-tag-re '(0 font-lock-type-face))
-    (cons yaml-node-anchor-alias-re '(0 font-lock-function-name-face))
-    (cons yaml-hash-key-re '(1 font-lock-variable-name-face))
+    (cons yaml-node-anchor-alias-re '(0 font-lock-function-name-face t))
+    (cons yaml-hash-key-re '(1 font-lock-variable-name-face t))
     (cons yaml-document-delimiter-re '(0 font-lock-comment-face))
     (cons yaml-directive-re '(1 font-lock-builtin-face))
     '(yaml-font-lock-block-literals 0 font-lock-string-face t)
@@ -253,23 +254,24 @@ artificially limitted to the value of
   (if (eolp) (goto-char (1+ (point))))
   (unless (or (eobp) (>= (point) bound))
     (let ((begin (point))
-          (end (min (point-at-eol) bound)))
-      (beginning-of-line)
+          (end (min (1+ (point-at-eol)) bound)))
+      (goto-char (point-at-bol))
       (while (and (looking-at yaml-blank-line-re) (not (bobp)))
         (forward-line -1))
-      (let ((level (current-indentation))
-            (nlines yaml-block-literal-search-lines))
-        (unless  (= level 0)
-          (forward-line -1)
-          (while (and (/= nlines 0)
-                      (or (>= (current-indentation) level)
-                          (looking-at yaml-blank-line-re))
-                      (not (bobp)))
-            (set 'nlines (1- nlines))
-            (forward-line -1)))
-        (cond
-         ((and (< (current-indentation) level)
-               (looking-at yaml-block-literal-re))
+      (let ((nlines yaml-block-literal-search-lines) 
+            (min-level (current-indentation))) 
+      (forward-line -1) 
+      (while (and (/= nlines 0) 
+                  (/= min-level 0) 
+                  (not (looking-at yaml-block-literal-re)) 
+                  (not (bobp))) 
+        (set 'nlines (1- nlines)) 
+        (unless (looking-at yaml-blank-line-re) 
+          (set 'min-level (min min-level (current-indentation)))) 
+        (forward-line -1)) 
+      (cond
+       ((and (< (current-indentation) min-level)
+             (looking-at yaml-block-literal-re))
           (goto-char end) (set-match-data (list begin end)) t)
          ((progn 
             (goto-char begin)
