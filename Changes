@@ -1,3 +1,13 @@
+0.0.3  Thu Jan 25 15:36:51 2007 JST
+	- Patch from Julian Scheid. Fixed comment hilighting bugs
+	  using this idea. #2
+	* Fixed comment-start bugs.
+	  See also http://emasaka.blog65.fc2.com/blog-entry-188.html
+	* Fixed few keywords regex.
+	  yaml-comment-re
+	  yaml-bare-scalar-re
+	  yaml-block-literal-base-re
+	* Fixed little bugs #1
 0.0.2  Fri Aug 25 18:04:01 2006 JST
 	- Patch from Marshall T. Vandegrift. Added lots of features.
 	* Added face used for YAML node anchors and aliases to
