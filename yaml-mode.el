@@ -112,7 +112,7 @@ that key is pressed to begin a block literal."
 (defconst yaml-blank-line-re "^ *$"
   "Regexp matching a line containing only (valid) whitespace.")
 
-(defconst yaml-comment-re "\\(#*.*\\)"
+(defconst yaml-comment-re "\\(?:^\\|\\s-+\\)\\(#.*\\)"
   "Regexp matching a line containing a YAML comment or delimiter.")
 
 (defconst yaml-directive-re "^\\(?:--- \\)? *%\\(\\w+\\)"
