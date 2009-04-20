@@ -1,3 +1,7 @@
+0.0.4  Mon Apr 20 16:46:13 2009 JST
+        - Patch from knagano and mad-p. Fixed font-lock bugs(#4)
+        * Move to github.com
+          New repogitory is http://github.com/yoshiki/yaml-mode/tree/master
 0.0.3  Thu Jan 25 15:36:51 2007 JST
 	- Patch from Julian Scheid. Fixed comment hilighting bugs
 	  using this idea. #2

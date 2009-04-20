@@ -2,7 +2,7 @@ NAME
     yaml-mode - Simple major mode to edit YAML file for emacs
 
 VERSION
-    0.0.3
+    0.0.4
 
 SYNOPSIS
     To install, just drop this file into a directory in your
