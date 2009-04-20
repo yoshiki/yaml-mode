@@ -5,7 +5,7 @@
 ;; Author: Yoshiki Kurihara <kurihara@cpan.org>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Keywords: data yaml
-;; Version: 0.0.3
+;; Version: 0.0.4
 
 ;; This file is not part of Emacs
 
@@ -107,7 +107,7 @@ that key is pressed to begin a block literal."
 
 ;; Constants
 
-(defconst yaml-mode-version "0.0.3" "Version of `yaml-mode.'")
+(defconst yaml-mode-version "0.0.4" "Version of `yaml-mode.'")
 
 (defconst yaml-blank-line-re "^ *$"
   "Regexp matching a line containing only (valid) whitespace.")
