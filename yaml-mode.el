@@ -205,7 +205,7 @@ that key is pressed to begin a block literal."
   (modify-syntax-entry ?# "<" yaml-mode-syntax-table)
   (modify-syntax-entry ?\n ">" yaml-mode-syntax-table)
   (modify-syntax-entry ?\\ "\\" yaml-mode-syntax-table)
-  (modify-syntax-entry ?- "." yaml-mode-syntax-table)
+  (modify-syntax-entry ?- "w" yaml-mode-syntax-table)
   (modify-syntax-entry ?_ "_" yaml-mode-syntax-table)
   (modify-syntax-entry ?\( "." yaml-mode-syntax-table)
   (modify-syntax-entry ?\) "." yaml-mode-syntax-table)
