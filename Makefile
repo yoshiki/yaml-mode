@@ -1,4 +1,4 @@
-VERSION=0.0.5
+VERSION=0.0.6
 EMACS = emacs
 PREFIX = /usr/local
 INSTALLLIBDIR = $(PREFIX)/share/emacs/site-lisp

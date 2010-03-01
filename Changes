@@ -1,3 +1,6 @@
+0.0.6  Mon Mar 1 20:16:29 2009 JST
+        * The dash (-) is a word character.
+          See YAML spec 1.2 section 5.6 (Remco van 't Veer)
 0.0.5  Mon Dec 21 2009
         - Provide outline of yaml document via imenu (Tim Harper)
 0.0.4  Mon Apr 20 16:46:13 2009 JST
