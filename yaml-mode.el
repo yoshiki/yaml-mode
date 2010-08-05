@@ -1,11 +1,11 @@
 ;;; yaml-mode.el --- Major mode for editing YAML files
 
-;; Copyright (C) 2006  Yoshiki Kurihara
+;; Copyright (C) 2010  Yoshiki Kurihara
 
 ;; Author: Yoshiki Kurihara <kurihara@cpan.org>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Keywords: data yaml
-;; Version: 0.0.6
+;; Version: 0.0.7
 
 ;; This file is not part of Emacs
 
@@ -113,7 +113,7 @@ that key is pressed to begin a block literal."
 
 ;; Constants
 
-(defconst yaml-mode-version "0.0.6" "Version of `yaml-mode.'")
+(defconst yaml-mode-version "0.0.7" "Version of `yaml-mode.'")
 
 (defconst yaml-blank-line-re "^ *$"
   "Regexp matching a line containing only (valid) whitespace.")
@@ -221,6 +221,7 @@ that key is pressed to begin a block literal."
   (set (make-local-variable 'comment-start) "# ")
   (set (make-local-variable 'comment-start-skip) "#+ *")
   (set (make-local-variable 'indent-line-function) 'yaml-indent-line)
+  (set (make-local-variable 'indent-tabs-mode) nil)
   (set (make-local-variable 'font-lock-defaults)
        '(yaml-font-lock-keywords
          nil nil nil nil
@@ -264,22 +265,22 @@ artificially limitted to the value of
       (goto-char (point-at-bol))
       (while (and (looking-at yaml-blank-line-re) (not (bobp)))
         (forward-line -1))
-      (let ((nlines yaml-block-literal-search-lines) 
-            (min-level (current-indentation))) 
-      (forward-line -1) 
-      (while (and (/= nlines 0) 
-                  (/= min-level 0) 
-                  (not (looking-at yaml-block-literal-re)) 
-                  (not (bobp))) 
-        (set 'nlines (1- nlines)) 
-        (unless (looking-at yaml-blank-line-re) 
-          (set 'min-level (min min-level (current-indentation)))) 
-        (forward-line -1)) 
+      (let ((nlines yaml-block-literal-search-lines)
+            (min-level (current-indentation)))
+      (forward-line -1)
+      (while (and (/= nlines 0)
+                  (/= min-level 0)
+                  (not (looking-at yaml-block-literal-re))
+                  (not (bobp)))
+        (set 'nlines (1- nlines))
+        (unless (looking-at yaml-blank-line-re)
+          (set 'min-level (min min-level (current-indentation))))
+        (forward-line -1))
       (cond
        ((and (< (current-indentation) min-level)
              (looking-at yaml-block-literal-re))
           (goto-char end) (set-match-data (list begin end)) t)
-         ((progn 
+         ((progn
             (goto-char begin)
             (re-search-forward (concat yaml-block-literal-re
                                        " *\\(.*\\)\n")
@@ -355,7 +356,7 @@ immediately previous multiple of `yaml-indent-offset' spaces."
       (indent-to (* (/ (- ci (* arg yaml-indent-offset))
                        yaml-indent-offset)
                     yaml-indent-offset)))))
-  
+
 (defun yaml-electric-bar-and-angle (arg)
   "Insert the bound key and possibly begin a block literal.
 Inserts the bound key.  If inserting the bound key causes the current
