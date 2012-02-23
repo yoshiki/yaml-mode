@@ -214,6 +214,7 @@ that key is pressed to begin a block literal."
   (modify-syntax-entry ?\[ "(]" yaml-mode-syntax-table)
   (modify-syntax-entry ?\] ")[" yaml-mode-syntax-table))
 
+;;;###autoload
 (define-derived-mode yaml-mode fundamental-mode "YAML"
   "Simple mode to edit YAML.
 
@@ -403,6 +404,9 @@ margin."
   (interactive)
   (message "yaml-mode %s" yaml-mode-version)
   yaml-mode-version)
+
+;;;###autoload
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 (provide 'yaml-mode)
 
