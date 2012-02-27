@@ -367,7 +367,7 @@ and indents appropriately."
   (interactive "*P")
   (self-insert-command (prefix-numeric-value arg))
   (let ((extra-chars
-         (assoc last-command-char
+         (assoc last-command-event
                 yaml-block-literal-electric-alist)))
     (cond
      ((and extra-chars (not arg) (eolp)
