@@ -1,3 +1,7 @@
+0.0.8  Tue Feb 28 13:06:42 2012
+        * Replaced `last-command-char` to `last-command-event` (sugyan)
+        * Ignore *.elc in .gitignore (semperos)
+        * Added autoload comments. (arthuraa)
 0.0.7  Thu Aug 5 14:35:14 2010 JST
        	* Fixed bug for 5th level's indentation becomes TAB character.
           See YAML spec 1.2 section 5.5. White Space Characters (ochko)
