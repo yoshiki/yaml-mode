@@ -129,7 +129,7 @@ that key is pressed to begin a block literal."
 (defconst yaml-document-delimiter-re "^ *\\(?:---\\|[.][.][.]\\)"
   "Rexexp matching a YAML document delimiter line.")
 
-(defconst yaml-node-anchor-alias-re "[&*]\\w+"
+(defconst yaml-node-anchor-alias-re "[&*][a-zA-Z0-9_-]+"
   "Regexp matching a YAML node anchor or alias.")
 
 (defconst yaml-tag-re "!!?[^ \n]+"
