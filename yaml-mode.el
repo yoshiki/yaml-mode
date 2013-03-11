@@ -1,11 +1,11 @@
 ;;; yaml-mode.el --- Major mode for editing YAML files
 
-;; Copyright (C) 2010  Yoshiki Kurihara
+;; Copyright (C) 2010-2013 Yoshiki Kurihara
 
-;; Author: Yoshiki Kurihara <kurihara@cpan.org>
+;; Author: Yoshiki Kurihara <clouder@gmail.com>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Keywords: data yaml
-;; Version: 0.0.7
+;; Version: 0.0.9
 
 ;; This file is not part of Emacs
 
@@ -115,7 +115,7 @@ that key is pressed to begin a block literal."
 
 ;; Constants
 
-(defconst yaml-mode-version "0.0.7" "Version of `yaml-mode'.")
+(defconst yaml-mode-version "0.0.9" "Version of `yaml-mode'.")
 
 (defconst yaml-blank-line-re "^ *$"
   "Regexp matching a line containing only (valid) whitespace.")
