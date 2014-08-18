@@ -194,8 +194,7 @@ that key is pressed to begin a block literal."
   (define-key yaml-mode-map ">" 'yaml-electric-bar-and-angle)
   (define-key yaml-mode-map "-" 'yaml-electric-dash-and-dot)
   (define-key yaml-mode-map "." 'yaml-electric-dash-and-dot)
-  (define-key yaml-mode-map [backspace] 'yaml-electric-backspace)
-  (define-key yaml-mode-map "\C-j" 'newline-and-indent))
+  (define-key yaml-mode-map [backspace] 'yaml-electric-backspace))
 
 (defvar yaml-mode-syntax-table nil
   "Syntax table in use in `yaml-mode' buffers.")
