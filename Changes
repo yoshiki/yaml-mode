@@ -1,3 +1,5 @@
+0.0.10 Mon Aug 25 04:06:50 GMT 2014
+        * Remove default C-j binding. (barrkel)
 0.0.9  Mon Mar 11 12:43:23 2013
         * Fix anchor name can contain '_'. (Monson Shao)
         * `checkdoc' nits (including the `checkdoc-autoload' extension).
