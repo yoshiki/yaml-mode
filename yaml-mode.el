@@ -137,14 +137,14 @@ that key is pressed to begin a block literal."
   "Rexexp matching a YAML bare scalar.")
 
 (defconst yaml-hash-key-re
-  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?:[-,] +\\)+\\) *"
+  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?:- +\\)+\\) *"
           "\\(?:" yaml-tag-re " +\\)?"
           "\\(" yaml-bare-scalar-re "\\) *:"
           "\\(?: +\\|$\\)")
   "Regexp matching a single YAML hash key.")
 
 (defconst yaml-scalar-context-re
-  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?:[-,] +\\)+\\) *"
+  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?:- +\\)+\\) *"
           "\\(?:" yaml-bare-scalar-re " *: \\)?")
   "Regexp indicating the begininng of a scalar context.")
 
@@ -178,6 +178,11 @@ that key is pressed to begin a block literal."
              "on" "On" "ON" "off" "Off" "OFF") t)
           " *$")
   "Regexp matching certain scalar constants in scalar context.")
+
+(defconst yaml-comment-re
+  (concat "\\(?:" yaml-block-literal-re "\\)?"
+          " *#+.*$")
+  "Regexp matching a comment.")
 
 
 ;; Mode setup
@@ -218,13 +223,11 @@ that key is pressed to begin a block literal."
 
 \\{yaml-mode-map}"
   :syntax-table yaml-mode-syntax-table
-  (set (make-local-variable 'comment-start) "# ")
-  (set (make-local-variable 'comment-start-skip) "#+ *")
   (set (make-local-variable 'indent-line-function) 'yaml-indent-line)
   (set (make-local-variable 'indent-tabs-mode) nil)
   (set (make-local-variable 'font-lock-defaults)
        '(yaml-font-lock-keywords
-         nil nil nil nil
+         t nil nil nil
          (font-lock-syntactic-keywords . yaml-font-lock-syntactic-keywords)))
   (font-lock-fontify-buffer))
 
@@ -238,6 +241,7 @@ that key is pressed to begin a block literal."
     (cons yaml-node-anchor-alias-re '(0 font-lock-function-name-face))
     (cons yaml-hash-key-re '(1 font-lock-variable-name-face))
     (cons yaml-document-delimiter-re '(0 font-lock-comment-face))
+    (cons yaml-comment-re '(0 font-lock-comment-face))
     (cons yaml-directive-re '(1 font-lock-builtin-face))
     '(yaml-font-lock-block-literals 0 font-lock-string-face)
     '("^[\t]+" 0 'yaml-tab-face t))
