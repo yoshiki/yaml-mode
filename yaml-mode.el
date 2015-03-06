@@ -180,9 +180,17 @@ that key is pressed to begin a block literal."
   "Regexp matching certain scalar constants in scalar context.")
 
 (defconst yaml-comment-re
-  (concat "\\(?:" yaml-block-literal-re "\\)?"
-          " *#+.*$")
-  "Regexp matching a comment.")
+  "#+.*$"
+  "Regexp matching a comment base.")
+
+(defconst yaml-comment-only-re
+  (concat "^" yaml-comment-re)
+  "Regexp matching a comment only.")
+
+(defconst yaml-comment-with-scalar-context-re
+  (concat "\\(?:" yaml-scalar-context-re "\\) *"
+          yaml-comment-re)
+  "Regexp matching a comment with scalar context.")
 
 
 ;; Mode setup
@@ -241,9 +249,9 @@ that key is pressed to begin a block literal."
     (cons yaml-node-anchor-alias-re '(0 font-lock-function-name-face))
     (cons yaml-hash-key-re '(1 font-lock-variable-name-face))
     (cons yaml-document-delimiter-re '(0 font-lock-comment-face))
-    (cons yaml-comment-re '(0 font-lock-comment-face))
     (cons yaml-directive-re '(1 font-lock-builtin-face))
     '(yaml-font-lock-block-literals 0 font-lock-string-face)
+    (cons yaml-comment-re '(0 font-lock-comment-face)) ;; needs to set after block literals
     '("^[\t]+" 0 'yaml-tab-face t))
    "Additional expressions to highlight in YAML mode.")
 
@@ -324,6 +332,9 @@ the entire buffer in `font-lock-string-face'."
                   (> (point) (point-min)))
         (forward-line -1))
       (+ (current-indentation)
+         (if (and (looking-at yaml-comment-with-scalar-context-re)
+                  (not (looking-at yaml-comment-only-re)))
+             yaml-indent-offset 0)
          (if (looking-at yaml-nested-map-re) yaml-indent-offset 0)
          (if (looking-at yaml-nested-sequence-re) yaml-indent-offset 0)
          (if (looking-at yaml-block-literal-re) yaml-indent-offset 0)))))
