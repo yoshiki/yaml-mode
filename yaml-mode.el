@@ -226,7 +226,10 @@ that key is pressed to begin a block literal."
        '(yaml-font-lock-keywords
          nil nil nil nil
          (font-lock-syntactic-keywords . yaml-font-lock-syntactic-keywords)))
-  (font-lock-fontify-buffer))
+  (if (fboundp 'font-lock-flush)
+      (font-lock-flush)
+    (with-no-warnings
+      (font-lock-fontify-buffer))))
 
 
 ;; Font-lock support
