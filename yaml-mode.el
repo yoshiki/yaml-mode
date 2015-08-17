@@ -449,7 +449,7 @@ cross boundaries of block literals."
   yaml-mode-version)
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.e?ya?ml$" . yaml-mode))
 
 (provide 'yaml-mode)
 
