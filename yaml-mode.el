@@ -212,8 +212,11 @@ that key is pressed to begin a block literal."
   (modify-syntax-entry ?\[ "(]" yaml-mode-syntax-table)
   (modify-syntax-entry ?\] ")[" yaml-mode-syntax-table))
 
+(defalias 'yaml-parent-mode
+  (if (fboundp 'prog-mode) 'prog-mode 'fundamental-mode))
+
 ;;;###autoload
-(define-derived-mode yaml-mode fundamental-mode "YAML"
+(define-derived-mode yaml-mode yaml-parent-mode "YAML"
   "Simple mode to edit YAML.
 
 \\{yaml-mode-map}"
