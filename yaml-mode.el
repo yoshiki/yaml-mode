@@ -144,7 +144,7 @@ that key is pressed to begin a block literal."
   "Regexp matching a single YAML hash key.")
 
 (defconst yaml-scalar-context-re
-  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?:[-,] +\\)+\\) *"
+  (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?: *[-,] +\\)+\\) *"
           "\\(?:" yaml-bare-scalar-re " *: \\)?")
   "Regexp indicating the begininng of a scalar context.")
 
