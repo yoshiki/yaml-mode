@@ -7,6 +7,9 @@ RECRUITMENTS
 NAME
     yaml-mode - Simple major mode to edit YAML file for emacs
 
+REQUIREMENTS
+    Emacs 24.1
+
 SYNOPSIS
     To install, just drop this file into a directory in your
     `load-path' and (optionally) byte-compile it.  To automatically
