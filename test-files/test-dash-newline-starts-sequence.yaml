@@ -1,0 +1,35 @@
+#
+# Old behaviour (version 0.0.12)
+#
+# (1) Move to cursor to the beginning of the line containing 'aaa'
+# (2) Press TAB
+# (3) The line should be indented now.
+# Problem: the line is not indented.
+#
+# Note: in the line containing the dash ('-') there is no space character
+# after the dash, so it is not recognized as start of the sequence entry
+# by 
+#
+# (defconst yaml-nested-sequence-re
+#  (concat "^\\(?: *- +\\)+"
+#          "\\(?:" yaml-bare-scalar-re " *:\\(?: +.*\\)?\\)?$")
+#  "Regexp matching a line containing one or more nested YAML sequences.")
+#
+# Proposed change:
+#
+# Change yaml-bare-scalar-re to
+#
+# (defconst yaml-nested-sequence-re
+#  (concat "^\\(?:\\(?: *- +\\)+\\|\\(:?-$\\)\\)"
+#          "\\(?:" yaml-bare-scalar-re " *:\\(?: +.*\\)?\\)?$")
+#  "Regexp matching a line containing one or more nested YAML sequences.")
+#
+# The added alternative \\(:?-$\\) now recognizes the dash-newline sequence.
+#
+# New behaviour:
+#
+#    (1) Pressing TAB on the line containing 'aaa' now indents the line.
+#    (2) Pressing TAB again unindents the line.
+#
+-
+aaa

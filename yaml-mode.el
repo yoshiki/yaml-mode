@@ -162,7 +162,7 @@ that key is pressed to begin a block literal."
   "Regexp matching a line beginning a YAML block literal.")
 
 (defconst yaml-nested-sequence-re
-  (concat "^\\(?: *- +\\)+"
+  (concat "^\\(?:\\(?: *- +\\)+\\|\\(:?-$\\)\\)"
           "\\(?:" yaml-bare-scalar-re " *:\\(?: +.*\\)?\\)?$")
   "Regexp matching a line containing one or more nested YAML sequences.")
 
