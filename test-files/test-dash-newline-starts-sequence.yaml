@@ -8,23 +8,11 @@
 #
 # Note: in the line containing the dash ('-') there is no space character
 # after the dash, so it is not recognized as start of the sequence entry
-# by 
-#
-# (defconst yaml-nested-sequence-re
-#  (concat "^\\(?: *- +\\)+"
-#          "\\(?:" yaml-bare-scalar-re " *:\\(?: +.*\\)?\\)?$")
-#  "Regexp matching a line containing one or more nested YAML sequences.")
+# by yaml-nested-sequence-re
 #
 # Proposed change:
 #
-# Change yaml-bare-scalar-re to
-#
-# (defconst yaml-nested-sequence-re
-#  (concat "^\\(?:\\(?: *- +\\)+\\|\\(:?-$\\)\\)"
-#          "\\(?:" yaml-bare-scalar-re " *:\\(?: +.*\\)?\\)?$")
-#  "Regexp matching a line containing one or more nested YAML sequences.")
-#
-# The added alternative \\(:?-$\\) now recognizes the dash-newline sequence.
+# Change yaml-bare-scalar-re to recognize the dash-newline sequence.
 #
 # New behaviour:
 #
