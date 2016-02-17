@@ -226,6 +226,9 @@ that key is pressed to begin a block literal."
        '(yaml-font-lock-keywords
          nil nil nil nil
          (font-lock-syntactic-keywords . yaml-font-lock-syntactic-keywords)))
+
+  (set (make-local-variable 'syntax-propertize-function)
+       'yaml-mode-syntax-propertize-function)
   (if (fboundp 'font-lock-flush)
       (font-lock-flush)
     (with-no-warnings
@@ -249,6 +252,18 @@ that key is pressed to begin a block literal."
   (list '(yaml-syntactic-block-literals 0 "."))
   "Additional syntax features to highlight in YAML mode.")
 
+(defun yaml-mode-syntax-propertize-function (beg end)
+  "Unhighlight foo#bar tokens between BEG and END."
+  (save-excursion
+    (goto-char beg)
+    (while (search-forward "#" end t)
+      (save-excursion
+        (forward-char -1)
+        ;; both ^# and [ \t]# are comments
+        (when (and (not (bolp))
+                   (not (memq (preceding-char) '(?\s ?\t))))
+          (put-text-property (point) (1+ (point))
+                             'syntax-table (string-to-syntax "_")))))))
 
 (defun yaml-font-lock-block-literals (bound)
   "Find lines within block literals.
