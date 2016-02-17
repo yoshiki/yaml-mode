@@ -222,13 +222,10 @@ that key is pressed to begin a block literal."
   (set (make-local-variable 'indent-line-function) 'yaml-indent-line)
   (set (make-local-variable 'indent-tabs-mode) nil)
   (set (make-local-variable 'fill-paragraph-function) 'yaml-fill-paragraph)
-  (set (make-local-variable 'font-lock-defaults)
-       '(yaml-font-lock-keywords
-         nil nil nil nil
-         (font-lock-syntactic-keywords . yaml-font-lock-syntactic-keywords)))
 
   (set (make-local-variable 'syntax-propertize-function)
        'yaml-mode-syntax-propertize-function)
+  (setq font-lock-defaults '(yaml-font-lock-keywords))
   (if (fboundp 'font-lock-flush)
       (font-lock-flush)
     (with-no-warnings
@@ -247,10 +244,6 @@ that key is pressed to begin a block literal."
     (yaml-font-lock-block-literals 0 font-lock-string-face)
     ("^[\t]+" 0 'yaml-tab-face t))
    "Additional expressions to highlight in YAML mode.")
-
-(defvar yaml-font-lock-syntactic-keywords
-  (list '(yaml-syntactic-block-literals 0 "."))
-  "Additional syntax features to highlight in YAML mode.")
 
 (defun yaml-mode-syntax-propertize-function (beg end)
   "Unhighlight foo#bar tokens between BEG and END."
@@ -303,26 +296,6 @@ artificially limitted to the value of
                                        " *\\(.*\\)\n")
                                bound t))
           (set-match-data (nthcdr 2 (match-data))) t))))))
-
-(defun yaml-syntactic-block-literals (bound)
-  "Find quote characters within block literals.
-Finds the first quote character within a block literal (if any) after
-point and prior to BOUND.  Returns the position of the quote character
-in the match data, as consumed by matcher functions in
-`font-lock-syntactic-keywords'.  This allows the mode to treat ['\"]
-characters in block literals as punctuation syntax instead of string
-syntax, preventing unmatched quotes in block literals from painting
-the entire buffer in `font-lock-string-face'."
-  (let ((found nil))
-    (while (and (not found)
-                (/= (point) bound)
-                (yaml-font-lock-block-literals bound))
-      (let ((begin (match-beginning 0)) (end (match-end 0)))
-        (goto-char begin)
-        (cond
-         ((re-search-forward "['\"]" end t) (setq found t))
-         ((goto-char end)))))
-    found))
 
 
 ;; Indentation and electric keys
