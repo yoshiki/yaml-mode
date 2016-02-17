@@ -235,15 +235,14 @@ that key is pressed to begin a block literal."
 ;; Font-lock support
 
 (defvar yaml-font-lock-keywords
-   (list
-    (cons yaml-constant-scalars-re '(1 font-lock-constant-face))
-    (cons yaml-tag-re '(0 font-lock-type-face))
-    (cons yaml-node-anchor-alias-re '(0 font-lock-function-name-face))
-    (cons yaml-hash-key-re '(1 font-lock-variable-name-face))
-    (cons yaml-document-delimiter-re '(0 font-lock-comment-face))
-    (cons yaml-directive-re '(1 font-lock-builtin-face))
-    '(yaml-font-lock-block-literals 0 font-lock-string-face)
-    '("^[\t]+" 0 'yaml-tab-face t))
+  `((,yaml-constant-scalars-re . (1 font-lock-constant-face))
+    (,yaml-tag-re . (0 font-lock-type-face))
+    (,yaml-node-anchor-alias-re . (0 font-lock-function-name-face))
+    (,yaml-hash-key-re . (1 font-lock-variable-name-face))
+    (,yaml-document-delimiter-re . (0 font-lock-comment-face))
+    (,yaml-directive-re . (1 font-lock-builtin-face))
+    (yaml-font-lock-block-literals 0 font-lock-string-face)
+    ("^[\t]+" 0 'yaml-tab-face t))
    "Additional expressions to highlight in YAML mode.")
 
 (defvar yaml-font-lock-syntactic-keywords
