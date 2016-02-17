@@ -183,35 +183,33 @@ that key is pressed to begin a block literal."
 
 ;; Mode setup
 
-(defvar yaml-mode-map ()
+(defvar yaml-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "|" 'yaml-electric-bar-and-angle)
+    (define-key map ">" 'yaml-electric-bar-and-angle)
+    (define-key map "-" 'yaml-electric-dash-and-dot)
+    (define-key map "." 'yaml-electric-dash-and-dot)
+    (define-key map [backspace] 'yaml-electric-backspace)
+    map)
   "Keymap used in `yaml-mode' buffers.")
-(if yaml-mode-map
-    nil
-  (setq yaml-mode-map (make-sparse-keymap))
-  (define-key yaml-mode-map "|" 'yaml-electric-bar-and-angle)
-  (define-key yaml-mode-map ">" 'yaml-electric-bar-and-angle)
-  (define-key yaml-mode-map "-" 'yaml-electric-dash-and-dot)
-  (define-key yaml-mode-map "." 'yaml-electric-dash-and-dot)
-  (define-key yaml-mode-map [backspace] 'yaml-electric-backspace))
 
-(defvar yaml-mode-syntax-table nil
+(defvar yaml-mode-syntax-table
+  (let ((syntax-table (make-syntax-table)))
+    (modify-syntax-entry ?\' "\"" syntax-table)
+    (modify-syntax-entry ?\" "\"" syntax-table)
+    (modify-syntax-entry ?# "<" syntax-table)
+    (modify-syntax-entry ?\n ">" syntax-table)
+    (modify-syntax-entry ?\\ "\\" syntax-table)
+    (modify-syntax-entry ?- "w" syntax-table)
+    (modify-syntax-entry ?_ "_" syntax-table)
+    (modify-syntax-entry ?\( "." syntax-table)
+    (modify-syntax-entry ?\) "." syntax-table)
+    (modify-syntax-entry ?\{ "(}" syntax-table)
+    (modify-syntax-entry ?\} "){" syntax-table)
+    (modify-syntax-entry ?\[ "(]" syntax-table)
+    (modify-syntax-entry ?\] ")[" syntax-table)
+    syntax-table)
   "Syntax table in use in `yaml-mode' buffers.")
-(if yaml-mode-syntax-table
-    nil
-  (setq yaml-mode-syntax-table (make-syntax-table))
-  (modify-syntax-entry ?\' "\"" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\" "\"" yaml-mode-syntax-table)
-  (modify-syntax-entry ?# "<" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\n ">" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\\ "\\" yaml-mode-syntax-table)
-  (modify-syntax-entry ?- "w" yaml-mode-syntax-table)
-  (modify-syntax-entry ?_ "_" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\( "." yaml-mode-syntax-table)
-  (modify-syntax-entry ?\) "." yaml-mode-syntax-table)
-  (modify-syntax-entry ?\{ "(}" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\} "){" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\[ "(]" yaml-mode-syntax-table)
-  (modify-syntax-entry ?\] ")[" yaml-mode-syntax-table))
 
 ;;;###autoload
 (define-derived-mode yaml-mode text-mode "YAML"
