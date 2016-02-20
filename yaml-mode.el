@@ -225,11 +225,7 @@ that key is pressed to begin a block literal."
 
   (set (make-local-variable 'syntax-propertize-function)
        'yaml-mode-syntax-propertize-function)
-  (setq font-lock-defaults '(yaml-font-lock-keywords))
-  (if (fboundp 'font-lock-flush)
-      (font-lock-flush)
-    (with-no-warnings
-      (font-lock-fontify-buffer))))
+  (setq font-lock-defaults '(yaml-font-lock-keywords)))
 
 
 ;; Font-lock support
