@@ -148,7 +148,7 @@ that key is pressed to begin a block literal."
 (defconst yaml-scalar-context-re
   (concat "\\(?:^\\(?:--- \\)?\\|{\\|\\(?: *[-,] +\\)+\\) *"
           "\\(?:" yaml-bare-scalar-re " *: \\)?")
-  "Regexp indicating the begininng of a scalar context.")
+  "Regexp indicating the beginning of a scalar context.")
 
 (defconst yaml-nested-map-re
   (concat ".*: *\\(?:&.*\\|{ *\\|" yaml-tag-re " *\\)?$")
