@@ -7,7 +7,7 @@
 ;; Maintainer: Vasilij Schneidermann <v.schneidermann@gmail.com>
 ;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: data yaml
-;; Version: 0.0.12
+;; Version: 0.0.13
 
 ;; This file is not part of Emacs
 
