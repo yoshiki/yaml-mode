@@ -190,7 +190,7 @@ that key is pressed to begin a block literal."
     (define-key map ">" 'yaml-electric-bar-and-angle)
     (define-key map "-" 'yaml-electric-dash-and-dot)
     (define-key map "." 'yaml-electric-dash-and-dot)
-    (define-key map [backspace] 'yaml-electric-backspace)
+    (define-key map (kbd "DEL") 'yaml-electric-backspace)
     map)
   "Keymap used in `yaml-mode' buffers.")
 
