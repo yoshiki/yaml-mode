@@ -201,7 +201,7 @@ that key is pressed to begin a block literal."
     (modify-syntax-entry ?# "<" syntax-table)
     (modify-syntax-entry ?\n ">" syntax-table)
     (modify-syntax-entry ?\\ "\\" syntax-table)
-    (modify-syntax-entry ?- "w" syntax-table)
+    (modify-syntax-entry ?- "_" syntax-table)
     (modify-syntax-entry ?_ "_" syntax-table)
     (modify-syntax-entry ?\( "." syntax-table)
     (modify-syntax-entry ?\) "." syntax-table)
