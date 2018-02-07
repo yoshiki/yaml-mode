@@ -267,7 +267,7 @@ that key is pressed to begin a block literal."
         (save-excursion
           (forward-char -1)
           (when (and (not (bolp))
-                     (not (memq (preceding-char) '(?\s ?\t))))
+                     (char-equal ?w (char-syntax (char-before (point)))))
             (put-text-property (point) (1+ (point))
                                'syntax-table (string-to-syntax "w"))))))))
 
