@@ -266,10 +266,14 @@ that key is pressed to begin a block literal."
       (when (nth 8 (syntax-ppss))
         (save-excursion
           (forward-char -1)
-          (when (and (not (bolp))
-                     (char-equal ?w (char-syntax (char-before (point)))))
-            (put-text-property (point) (1+ (point))
-                               'syntax-table (string-to-syntax "w"))))))))
+          (cond ((and (char-equal ?' (char-before (point)))
+                      (char-equal ?' (char-after (point)))
+                      (put-text-property (1- (point)) (1+ (point))
+                                         'syntax-table (string-to-syntax "w"))))
+                ((and (not (bolp))
+                      (char-equal ?w (char-syntax (char-before (point)))))
+                 (put-text-property (point) (1+ (point))
+                                    'syntax-table (string-to-syntax "w")))))))))
 
 (defun yaml-font-lock-block-literals (bound)
   "Find lines within block literals.
