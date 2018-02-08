@@ -262,7 +262,7 @@ that key is pressed to begin a block literal."
   ;; after a non-whitespace character, then mark it as syntactic word.
   (save-excursion
     (goto-char beg)
-    (while (search-forward "'" end t)
+    (while (re-search-forward "['\"]" end t)
       (when (nth 8 (syntax-ppss))
         (save-excursion
           (forward-char -1)
