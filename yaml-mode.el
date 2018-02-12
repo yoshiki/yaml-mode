@@ -263,6 +263,9 @@ that key is pressed to begin a block literal."
   (save-excursion
     (goto-char beg)
     (while (re-search-forward "['\"]" end t)
+      (when (get-text-property (point) 'yaml-block-literal)
+        (put-text-property (1- (point)) (point)
+                           'syntax-table (string-to-syntax "w")))
       (when (nth 8 (syntax-ppss))
         (save-excursion
           (forward-char -1)
@@ -308,6 +311,7 @@ artificially limitted to the value of
          ((and (< (current-indentation) min-level)
                (looking-at yaml-block-literal-re))
           (goto-char end)
+          (put-text-property begin end 'yaml-block-literal t)
           (set-match-data (list begin end))
           t)
          ((progn
@@ -315,7 +319,10 @@ artificially limitted to the value of
             (re-search-forward (concat yaml-block-literal-re
                                        " *\\(.*\\)\n")
                                bound t))
-          (set-match-data (nthcdr 2 (match-data))) t))))))
+          (let ((range (nthcdr 2 (match-data))))
+            (put-text-property (car range) (cadr range) 'yaml-block-literal t)
+            (set-match-data range))
+          t))))))
 
 
 ;; Indentation and electric keys
