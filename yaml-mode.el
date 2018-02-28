@@ -297,7 +297,7 @@ artificially limitted to the value of
                   (not (bobp)))
         (forward-line -1))
       (let ((nlines yaml-block-literal-search-lines)
-            (min-level (current-indentation)))
+            (min-level (- (current-indentation) yaml-indent-offset)))
         (forward-line -1)
         (while (and (/= nlines 0)
                     (/= min-level 0)
