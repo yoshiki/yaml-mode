@@ -438,13 +438,15 @@ otherwise do nothing."
 
 (defun yaml-fill-paragraph (&optional justify region)
   "Fill paragraph.
-This behaves as `fill-paragraph' except that filling does not
-cross boundaries of block literals."
+Outside of comments, this behaves as `fill-paragraph' except that
+filling does not cross boundaries of block literals.  Inside comments,
+this will do usual adaptive fill behaviors."
   (interactive "*P")
   (save-restriction
     (yaml-narrow-to-block-literal)
     (let ((fill-paragraph-function nil))
-      (fill-paragraph justify region))))
+      (or (fill-comment-paragraph justify)
+          (fill-paragraph justify region)))))
 
 (defun yaml-set-imenu-generic-expression ()
   (make-local-variable 'imenu-generic-expression)
