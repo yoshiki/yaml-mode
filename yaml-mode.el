@@ -115,6 +115,23 @@ that key is pressed to begin a block literal."
   :type 'string
   :group 'yaml)
 
+(defcustom yaml-check-command
+  (or (concat (executable-find "yamllint") " -f parsable")
+      "install yamllint or something else")
+  "Command used to check a YAML file."
+  :type 'string
+  :group 'yaml)
+
+(defcustom yaml-check-buffer-name
+  "*YAML check: %s*"
+  "Buffer name used for check commands."
+  :type 'string
+  :group 'yaml)
+
+(defvar yaml-check-custom-command nil
+  "Internal use.")
+(make-variable-buffer-local 'yaml-check-custom-command)
+
 
 ;; Constants
 
@@ -181,6 +198,28 @@ that key is pressed to begin a block literal."
              "on" "On" "ON" "off" "Off" "OFF") t)
           " *$")
   "Regexp matching certain scalar constants in scalar context.")
+
+;; Commands
+
+(defun yaml-check (command)
+  "Check a YAML file (default current buffer's file).
+Runs COMMAND, a shell command, as if by `compile'.
+See `yaml-check-command' for the default."
+  (interactive
+   (list (read-string "Check command: "
+                      (or yaml-check-custom-command
+                          (concat yaml-check-command " "
+                                  (shell-quote-argument
+                                   (or
+                                    (let ((name (buffer-file-name)))
+                                      (and name
+                                           (file-name-nondirectory name)))
+                                    "")))))))
+  (setq yaml-check-custom-command command)
+  (save-some-buffers (not compilation-ask-about-save) nil)
+  (compilation-start command nil
+		     (lambda (_modename)
+		       (format yaml-check-buffer-name command))))
 
 
 ;; Mode setup
@@ -192,6 +231,7 @@ that key is pressed to begin a block literal."
     (define-key map "-" 'yaml-electric-dash-and-dot)
     (define-key map "." 'yaml-electric-dash-and-dot)
     (define-key map (kbd "DEL") 'yaml-electric-backspace)
+    (define-key map "\C-c\C-v" 'yaml-check)
     map)
   "Keymap used in `yaml-mode' buffers.")
 
