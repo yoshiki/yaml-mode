@@ -45,7 +45,7 @@
         * Move to github.com
           New repogitory is http://github.com/yoshiki/yaml-mode/tree/master
 0.0.3  Thu Jan 25 15:36:51 2007 JST
-	- Patch from Julian Scheid. Fixed comment hilighting bugs
+	- Patch from Julian Scheid. Fixed comment highlighting bugs
 	  using this idea. #2
 	* Fixed comment-start bugs.
 	  See also http://emasaka.blog65.fc2.com/blog-entry-188.html
