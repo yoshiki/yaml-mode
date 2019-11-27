@@ -286,7 +286,7 @@ line in the match data, as consumed by `font-lock-keywords' matcher
 functions.  The function begins by searching backwards to determine
 whether or not the current line is within a block literal.  This could
 be time-consuming in large buffers, so the number of lines searched is
-artificially limitted to the value of
+artificially limited to the value of
 `yaml-block-literal-search-lines'."
   (if (eolp) (goto-char (1+ (point))))
   (unless (or (eobp) (>= (point) bound))
