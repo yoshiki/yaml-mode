@@ -266,9 +266,9 @@ that key is pressed to begin a block literal."
       (when (get-text-property (point) 'yaml-block-literal)
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax "w")))
-      (let ((sps (syntax-ppss))
-            (pt (point)))
-        (when (nth 3 sps)
+      (let* ((pt (point))
+             (sps (save-excursion (syntax-ppss (1- pt)))))
+        (when (not (nth 8 sps))
           (cond
            ((and (char-equal ?' (char-before (1- pt)))
                  (char-equal ?' (char-before pt)))
@@ -283,7 +283,7 @@ that key is pressed to begin a block literal."
            (t
             ;; We're right after a quote that opens a string literal.
             ;; Skip over it (big speedup for long JSON strings).
-            (goto-char (nth 8 sps))
+            (goto-char (1- pt))
             (ignore-errors (forward-sexp)))))))))
 
 (defun yaml-font-lock-block-literals (bound)
