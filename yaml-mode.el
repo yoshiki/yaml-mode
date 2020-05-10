@@ -258,8 +258,6 @@ that key is pressed to begin a block literal."
           (put-text-property (point) (1+ (point))
                              'syntax-table (string-to-syntax "_"))))))
 
-  ;; If quote is detected as a syntactic string start but appeared
-  ;; after a non-whitespace character, then mark it as syntactic word.
   (save-excursion
     (goto-char beg)
     (while (and
@@ -268,24 +266,25 @@ that key is pressed to begin a block literal."
       (when (get-text-property (point) 'yaml-block-literal)
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax "w")))
-      (let ((sps (syntax-ppss)))
-        (when (nth 8 sps)
-          (or
-           (save-excursion
-             (forward-char -1)
-             (cond ((and (char-equal ?' (char-before (point)))
-                         (char-equal ?' (char-after (point)))
-                         (put-text-property (1- (point)) (1+ (point))
-                                            'syntax-table (string-to-syntax "w"))))
-                   ((and (not (bolp))
-                         (char-equal ?w (char-syntax (char-before (point)))))
-                    (put-text-property (point) (1+ (point))
-                                       'syntax-table (string-to-syntax "w")))))
-           ;; We're right after a quote that opens a string literal.
-           ;; Skip over it (big speedup for long JSON strings).
-           (when (nth 3 sps)
-             (goto-char (nth 8 sps))
-             (ignore-errors (forward-sexp)))))))))
+      (let ((sps (syntax-ppss))
+            (pt (point)))
+        (when (nth 3 sps)
+          (cond
+           ((and (char-equal ?' (char-before (1- pt)))
+                 (char-equal ?' (char-before pt))
+                 (put-text-property (- pt 2) pt
+                                    'syntax-table (string-to-syntax "w"))))
+           ;; If quote is detected as a syntactic string start but appeared
+           ;; after a non-whitespace character, then mark it as syntactic word.
+           ((and (not (eq ?\n (char-before (1- pt))))
+                 (char-equal ?w (char-syntax (char-before (1- pt)))))
+            (put-text-property (1- pt) pt
+                               'syntax-table (string-to-syntax "w")))
+           (t
+            ;; We're right after a quote that opens a string literal.
+            ;; Skip over it (big speedup for long JSON strings).
+            (goto-char (nth 8 sps))
+            (ignore-errors (forward-sexp)))))))))
 
 (defun yaml-font-lock-block-literals (bound)
   "Find lines within block literals.
