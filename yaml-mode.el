@@ -271,9 +271,9 @@ that key is pressed to begin a block literal."
         (when (nth 3 sps)
           (cond
            ((and (char-equal ?' (char-before (1- pt)))
-                 (char-equal ?' (char-before pt))
-                 (put-text-property (- pt 2) pt
-                                    'syntax-table (string-to-syntax "w"))))
+                 (char-equal ?' (char-before pt)))
+            (put-text-property (- pt 2) pt
+                               'syntax-table (string-to-syntax "w")))
            ;; If quote is detected as a syntactic string start but appeared
            ;; after a non-whitespace character, then mark it as syntactic word.
            ((and (char-before (1- pt))
