@@ -262,21 +262,30 @@ that key is pressed to begin a block literal."
   ;; after a non-whitespace character, then mark it as syntactic word.
   (save-excursion
     (goto-char beg)
-    (while (re-search-forward "['\"]" end t)
+    (while (and
+            (> end (point))
+            (re-search-forward "['\"]" end t))
       (when (get-text-property (point) 'yaml-block-literal)
         (put-text-property (1- (point)) (point)
                            'syntax-table (string-to-syntax "w")))
-      (when (nth 8 (syntax-ppss))
-        (save-excursion
-          (forward-char -1)
-          (cond ((and (char-equal ?' (char-before (point)))
-                      (char-equal ?' (char-after (point)))
-                      (put-text-property (1- (point)) (1+ (point))
-                                         'syntax-table (string-to-syntax "w"))))
-                ((and (not (bolp))
-                      (char-equal ?w (char-syntax (char-before (point)))))
-                 (put-text-property (point) (1+ (point))
-                                    'syntax-table (string-to-syntax "w")))))))))
+      (let ((sps (syntax-ppss)))
+        (when (nth 8 sps)
+          (or
+           (save-excursion
+             (forward-char -1)
+             (cond ((and (char-equal ?' (char-before (point)))
+                         (char-equal ?' (char-after (point)))
+                         (put-text-property (1- (point)) (1+ (point))
+                                            'syntax-table (string-to-syntax "w"))))
+                   ((and (not (bolp))
+                         (char-equal ?w (char-syntax (char-before (point)))))
+                    (put-text-property (point) (1+ (point))
+                                       'syntax-table (string-to-syntax "w")))))
+           ;; We're right after a quote that opens a string literal.
+           ;; Skip over it (big speedup for long JSON strings).
+           (when (nth 3 sps)
+             (goto-char (nth 8 sps))
+             (ignore-errors (forward-sexp)))))))))
 
 (defun yaml-font-lock-block-literals (bound)
   "Find lines within block literals.
