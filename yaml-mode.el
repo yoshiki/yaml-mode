@@ -276,7 +276,7 @@ that key is pressed to begin a block literal."
                                     'syntax-table (string-to-syntax "w"))))
            ;; If quote is detected as a syntactic string start but appeared
            ;; after a non-whitespace character, then mark it as syntactic word.
-           ((and (not (eq ?\n (char-before (1- pt))))
+           ((and (char-before (1- pt))
                  (char-equal ?w (char-syntax (char-before (1- pt)))))
             (put-text-property (1- pt) pt
                                'syntax-table (string-to-syntax "w")))
