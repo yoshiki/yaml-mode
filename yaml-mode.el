@@ -284,7 +284,10 @@ that key is pressed to begin a block literal."
             ;; We're right after a quote that opens a string literal.
             ;; Skip over it (big speedup for long JSON strings).
             (goto-char (1- pt))
-            (ignore-errors (forward-sexp)))))))))
+            (condition-case nil
+                (forward-sexp)
+              (scan-error
+               (goto-char end))))))))))
 
 (defun yaml-font-lock-block-literals (bound)
   "Find lines within block literals.
