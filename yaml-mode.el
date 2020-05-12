@@ -274,7 +274,7 @@ that key is pressed to begin a block literal."
                  (char-equal ?' (char-before pt)))
             (put-text-property (- pt 2) pt
                                'syntax-table (string-to-syntax "w"))
-            ;; Workaround for an infloop bug.
+            ;; Workaround for https://debbugs.gnu.org/41195.
             (let ((syntax-propertize--done syntax-propertize--done))
               ;; Carefully invalidate the last cached ppss.
               (syntax-ppss-flush-cache (- pt 2))))
