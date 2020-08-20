@@ -322,6 +322,8 @@ artificially limited to the value of
           (unless (looking-at yaml-blank-line-re)
             (setq min-level (min min-level (current-indentation))))
           (forward-line -1))
+        (when (looking-at-p " *- ")
+          (setq min-level (- min-level 2)))
         (cond
          ((and (< (current-indentation) min-level)
                (looking-at yaml-block-literal-re))
