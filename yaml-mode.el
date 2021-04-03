@@ -215,10 +215,11 @@ that key is pressed to begin a block literal."
   "Syntax table in use in `yaml-mode' buffers.")
 
 ;;;###autoload
-(define-derived-mode yaml-mode text-mode "YAML"
+(define-derived-mode yaml-mode prog-mode "YAML"
   "Simple mode to edit YAML.
 
-\\{yaml-mode-map}"
+\\{yaml-mode-map}
+paaguti: try to derive from prog-mode"
   :syntax-table yaml-mode-syntax-table
   (set (make-local-variable 'comment-start) "# ")
   (set (make-local-variable 'comment-start-skip) "#+ *")
@@ -473,6 +474,11 @@ this will do usual adaptive fill behaviors."
 
 (add-hook 'yaml-mode-hook 'yaml-set-imenu-generic-expression)
 
+(add-hook 'yaml-mode-hook #'(lambda ()
+                              "Since we derive from prog-mode,
+make sure we wrap lines for example, for ssh public keys"
+                              (setq truncate-lines nil)))
+
 
 (defun yaml-mode-version ()
   "Display version of `yaml-mode'."
@@ -482,6 +488,7 @@ this will do usual adaptive fill behaviors."
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode))
+
 
 (provide 'yaml-mode)
 
