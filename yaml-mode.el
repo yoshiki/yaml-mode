@@ -5,6 +5,7 @@
 ;; Author: Yoshiki Kurihara <clouder@gmail.com>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Maintainer: Vasilij Schneidermann <mail@vasilij.de>
+;; URL: https://github.com/yoshiki/yaml-mode
 ;; Package-Requires: ((emacs "24.1"))
 ;; Keywords: data yaml
 ;; Version: 0.0.15
