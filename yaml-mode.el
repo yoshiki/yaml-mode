@@ -484,6 +484,10 @@ this will do usual adaptive fill behaviors."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.\\(e?ya?\\|ra\\)ml\\'" . yaml-mode))
 
+;;;###autoload
+(add-to-list 'magic-mode-alist
+             '("^%YAML\\s-+[0-9]+\\.[0-9]+\\(\\s-+#\\|\\s-*$\\)" . yaml-mode))
+
 (provide 'yaml-mode)
 
 ;;; yaml-mode.el ends here
