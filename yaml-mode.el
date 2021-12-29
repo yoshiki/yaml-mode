@@ -1,4 +1,4 @@
-;;; yaml-mode.el --- Major mode for editing YAML files
+;;; yaml-mode.el --- Major mode for editing YAML files -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2014 Yoshiki Kurihara
 
@@ -367,7 +367,6 @@ back-dent the line by `yaml-indent-offset' spaces.  On reaching column
 0, it will cycle back to the maximum sensible indentation."
   (interactive "*")
   (let ((ci (current-indentation))
-        (cc (current-column))
         (need (yaml-compute-indentation)))
     (save-excursion
       (beginning-of-line)
