@@ -306,8 +306,8 @@ artificially limited to the value of
   (if (eolp) (goto-char (1+ (point))))
   (unless (or (eobp) (>= (point) bound))
     (let ((begin (point))
-          (end (min (1+ (point-at-eol)) bound)))
-      (goto-char (point-at-bol))
+          (end (min (1+ (line-end-position)) bound)))
+      (goto-char (line-beginning-position))
       (while (and (looking-at yaml-blank-line-re)
                   (not (bobp)))
         (forward-line -1))
@@ -426,7 +426,7 @@ margin."
 otherwise do nothing."
   (interactive)
   (save-excursion
-    (goto-char (point-at-bol))
+    (goto-char (line-beginning-position))
     (while (and (looking-at-p yaml-blank-line-re) (not (bobp)))
       (forward-line -1))
     (let ((nlines yaml-block-literal-search-lines)
