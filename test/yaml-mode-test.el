@@ -35,7 +35,7 @@
     #'font-lock-fontify-buffer))
 
 (defmacro yaml-test-string (string &rest body)
-  "Run BODY in a temporary buffer containing STRING in MODE."
+  "Run BODY in a temporary buffer containing STRING in `yaml-mode'."
   (declare (indent 1))
   `(let ((win (selected-window)))
      (unwind-protect
