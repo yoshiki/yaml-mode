@@ -1,6 +1,6 @@
 ;;;; yaml-mode-test.el --- Tests for yaml-mode  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2010-2022 Yoshiki Kurihara
+;; Copyright (C) 2022 - Shohei YOSHIDA
 
 ;; Author: Yoshiki Kurihara <clouder@gmail.com>
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
@@ -29,32 +29,27 @@
 
 (require 'yaml-mode)
 (require 'ert)
-(require 'cl-lib)
 
 ;; for version < 25
 (defconst yaml-test-font-lock-function
   (if (fboundp 'font-lock-ensure)
-      #'font-lock-ensure #'font-lock-fontify-buffer))
+      #'font-lock-ensure
+    #'font-lock-fontify-buffer))
 
-(defmacro yaml-test-string-mode (mode string &rest body)
+(defmacro yaml-test-string (string &rest body)
   "Run BODY in a temporary buffer containing STRING in MODE."
-  (declare (indent 2))
+  (declare (indent 1))
   `(let ((win (selected-window)))
      (unwind-protect
          (with-temp-buffer
            (set-window-buffer win (current-buffer) t)
            (erase-buffer)
            (insert ,string)
-           (funcall ,mode)
+           (yaml-mode)
            (funcall yaml-test-font-lock-function)
            (setq-default indent-tabs-mode nil)
            (goto-char (point-min))
            (prog1 ,@body (kill-buffer))))))
-
-(defmacro yaml-test-string (string &rest body)
-  "Run BODY in a temporary buffer containing STRING in `yaml-mode'."
-  (declare (indent 1))
-  `(yaml-test-string-mode 'yaml-mode ,string ,@body))
 (def-edebug-spec yaml-test-string (form body))
 
 (defun yaml-test-report-property-range (begin end prop)
@@ -108,9 +103,12 @@ Detail: https://github.com/yoshiki/yaml-mode/issues/96"
     tls: True
   - horizon:
     tls: True # comment
+  - nova:
+    tls: True#123
 "
     (yaml-test-range-has-face 34 37 'font-lock-constant-face)
-    (yaml-test-range-has-face 61 64 'font-lock-constant-face)))
+    (yaml-test-range-has-face 61 64 'font-lock-constant-face)
+    (yaml-test-range-has-face 95 102 nil)))
 
 (provide 'yaml-mode-test)
 
