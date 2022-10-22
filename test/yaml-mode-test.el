@@ -34,21 +34,41 @@
       #'font-lock-ensure
     #'font-lock-fontify-buffer))
 
-(defmacro yaml-test-string (string &rest body)
-  "Run BODY in a temporary buffer containing STRING in `yaml-mode'."
+(defun yaml-test-font-lock--ranges (string)
+  (let (ranges)
+    (with-temp-buffer
+      (insert string)
+      (goto-char (point-min))
+      (while (search-forward "«" nil t)
+        (let ((beg (match-beginning 0)))
+          (replace-match "")
+          (when (not (search-forward "»" nil t))
+            (user-error "unmatched range on line %d (%d)"
+                        (line-number-at-pos beg) beg))
+          (let ((end (match-beginning 0)))
+            (replace-match "")
+            (push (cons beg end) ranges)))))
+    (nreverse ranges)))
+
+(defun yaml-test-font-lock (string faces)
+  "Ensure that STRING contains specified FACES in `yaml-mode'.
+STRING contains areas delimited by chevrons («...») that
+correspond to FACES in the listed order."
   (declare (indent 1))
-  `(let ((win (selected-window)))
-     (unwind-protect
-         (with-temp-buffer
-           (set-window-buffer win (current-buffer) t)
-           (erase-buffer)
-           (insert ,string)
-           (yaml-mode)
-           (funcall yaml-test-font-lock-function)
-           (setq-default indent-tabs-mode nil)
-           (goto-char (point-min))
-           (prog1 ,@body (kill-buffer))))))
-(def-edebug-spec yaml-test-string (form body))
+  (let ((win (selected-window))
+        (ranges (yaml-test-font-lock--ranges string)))
+    (when (not (= (length ranges) (length faces)))
+      (user-error "Mismatch between number of ranges and specified faces."))
+    (with-temp-buffer
+      (set-window-buffer win (current-buffer) t)
+      (insert (replace-regexp-in-string "[«»]" "" string))
+      (yaml-mode)
+      (funcall yaml-test-font-lock-function)
+      (dolist (face faces)
+        (let* ((range (pop ranges))
+               (beg (car range))
+               (end (1- (cdr range))))
+          (yaml-test-range-has-face beg end face))))))
 
 (defun yaml-test-report-property-range (begin end prop)
   "Report buffer substring and property PROP from BEGIN to END."
@@ -79,6 +99,20 @@
   "Verify that the range from BEGIN to END has face FACE."
   (yaml-test-range-has-property begin end 'face face))
 
+(defmacro yaml-test-string (string &rest body)
+  "Run BODY in a temporary buffer containing STRING in `yaml-mode'."
+  (declare (indent 1))
+  `(let ((win (selected-window)))
+     (with-temp-buffer
+       (set-window-buffer win (current-buffer) t)
+       (insert ,string)
+       (yaml-mode)
+       (funcall yaml-test-font-lock-function)
+       (setq-default indent-tabs-mode nil)
+       (goto-char (point-min))
+       ,@body)))
+(def-edebug-spec yaml-test-string (form body))
+
 ;;; major-mode tests:
 
 (ert-deftest test-yaml-major-mode ()
@@ -95,17 +129,17 @@
 (ert-deftest highlighting/constant-before-comment ()
   "Highlighting constant before comment.
 Detail: https://github.com/yoshiki/yaml-mode/issues/96"
-  (yaml-test-string "services:
+  (yaml-test-font-lock "services:
   - keystone:
-    tls: True
+    tls: «True»
   - horizon:
-    tls: True # comment
+    tls: «True» # comment
   - nova:
-    tls: True#123
+    tls: «True#123»
 "
-    (yaml-test-range-has-face 34 37 'font-lock-constant-face)
-    (yaml-test-range-has-face 61 64 'font-lock-constant-face)
-    (yaml-test-range-has-face 95 102 nil)))
+    '(font-lock-constant-face
+      font-lock-constant-face
+      nil)))
 
 (provide 'yaml-mode-test)
 
