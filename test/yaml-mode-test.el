@@ -2,9 +2,7 @@
 
 ;; Copyright (C) 2022 - Shohei YOSHIDA
 
-;; Author: Yoshiki Kurihara <clouder@gmail.com>
-;;         Marshall T. Vandegrift <llasram@gmail.com>
-;; Maintainer: Vasilij Schneidermann <mail@vasilij.de>
+;; Author: Shohei YOSHIDA <syohex@gmail.com>
 
 ;; This file is not part of GNU Emacs.
 
