@@ -59,16 +59,15 @@
 
 (defun yaml-test-range-has-property (begin end prop value)
   "Verify that range BEGIN to END has PROP equal to or containing VALUE."
-  (let (vals fail-loc)
-    (setq fail-loc
-          (catch 'fail
-            (dolist (loc (number-sequence begin end))
-              (setq vals (get-char-property loc prop))
-              (if (and vals (listp vals))
-                  (unless (memq value vals)
-                    (throw 'fail loc))
-                (unless (eq vals value)
-                  (throw 'fail loc))))))
+  (let ((fail-loc
+         (catch 'fail
+           (dolist (loc (number-sequence begin end))
+             (let ((vals (get-char-property loc prop)))
+               (if (and vals (listp vals))
+                   (unless (memq value vals)
+                     (throw 'fail loc))
+                 (unless (eq vals value)
+                   (throw 'fail loc))))))))
     (when fail-loc
       (message "Testing range (%d,%d) for property %s equal to %s."
                begin end prop value)
