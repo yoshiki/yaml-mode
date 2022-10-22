@@ -178,7 +178,7 @@ that key is pressed to begin a block literal."
              "y" "Y" "yes" "Yes" "YES" "n" "N" "no" "No" "NO"
              "true" "True" "TRUE" "false" "False" "FALSE"
              "on" "On" "ON" "off" "Off" "OFF") t)
-          " *$")
+          "\\_>")
   "Regexp matching certain scalar constants in scalar context.")
 
 
