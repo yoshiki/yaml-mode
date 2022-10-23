@@ -126,6 +126,39 @@ correspond to FACES in the listed order."
 
 ;;; Regression tests:
 
+(ert-deftest highlighting/string-syntax ()
+  "Highlighting of string syntax.
+Detail: https://github.com/yoshiki/yaml-mode/issues/75
+PR: https://github.com/yoshiki/yaml-mode/pull/76"
+  (yaml-test-font-lock "«some's'strings'some's'nots»:
+- here: «syntax is not string»
+- this: «'is a string with \"quotes\"'»
+- and: «'to express one single quote, use '' two of them'»
+- finally: «syntax is not string»
+- singlequotedoesntfreeze: '
+"
+    '(font-lock-variable-name-face
+      nil
+      font-lock-string-face
+      font-lock-string-face
+      nil)))
+
+(ert-deftest highlighting/list-of-dicts-containing-literal-block ()
+  "Highlighting literal blocks in list of dicts.
+PR: https://github.com/yoshiki/yaml-mode/pull/81"
+  (yaml-test-font-lock "example:
+  - key1: «Correctly propertized»
+    key2: |
+      «Correctly propertized.»
+  - key3: |
+      «Correctly propertized»
+    key4: «Incorrectly propertized as part of preceding yaml-literal-block»
+"
+    '(nil
+      font-lock-string-face
+      font-lock-string-face
+      nil)))
+
 (ert-deftest highlighting/constant-before-comment ()
   "Highlighting constant before comment.
 Detail: https://github.com/yoshiki/yaml-mode/issues/96"
