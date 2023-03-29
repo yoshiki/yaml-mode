@@ -368,11 +368,9 @@ back-dent the line by `yaml-indent-offset' spaces.  On reaching column
   (let ((ci (current-indentation))
         (need (yaml-compute-indentation)))
     (save-excursion
-      (beginning-of-line)
-      (delete-horizontal-space)
       (if (and (equal last-command this-command) (/= ci 0))
-          (indent-to (* (/ (- ci 1) yaml-indent-offset) yaml-indent-offset))
-        (indent-to need)))
+          (indent-line-to (* (/ (- ci 1) yaml-indent-offset) yaml-indent-offset))
+        (indent-line-to need)))
     (if (< (current-column) (current-indentation))
         (forward-to-indentation 0))))
 
