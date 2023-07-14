@@ -123,7 +123,7 @@ that key is pressed to begin a block literal."
   "Regexp matching a line containing only (valid) whitespace.")
 
 (defconst yaml-directive-re "^\\(?:--- \\)? *%\\(\\w+\\)"
-  "Regexp matching a line contatining a YAML directive.")
+  "Regexp matching a line containing a YAML directive.")
 
 (defconst yaml-document-delimiter-re "^\\(?:---\\|[.][.][.]\\)"
   "Rexexp matching a YAML document delimiter line.")
