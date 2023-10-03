@@ -1,3 +1,13 @@
+0.0.16 Wed Sep 20 00:01:32 CEST 2023
+	* Do not modify the buffer in `yaml-indent-line` unless necessary
+	(Konstantin Kharlamov)
+	* More tests (Vasilij Schneidermann)
+	* Add unit test and github actions (Shohei YOSHIDA)
+	* Fix syntax highlighting in presence of inline comments (liuyinz)
+	* Fix byte-compile warning (Shohei YOSHIDA)
+	* Upgrade license to GPLv3 (Stefan Kangas)
+	* Turn on lexical binding (Daniel Mendler)
+	* Add magic-mode-list entry (Ville Skyttä)
 0.0.15 Mon Nov  9 11:22:02 CET 2020
 	* Fix propertization for lists of dicts with literal block (Ben
 	Strutt)
