@@ -174,6 +174,30 @@ Detail: https://github.com/yoshiki/yaml-mode/issues/96"
       font-lock-constant-face
       nil)))
 
+(ert-deftest moving/page-navigation ()
+  "Moving page by page delimiters.
+Detail: https://github.com/yoshiki/yaml-mode/pull/110"
+  (yaml-test-string "
+---
+at: 2001-08-12 09:25:00.00 Z
+type: GET
+HTTP: '1.0'
+url: '/index.html'
+--- %YAML:1.0
+at: 2001-08-12 09:25:10.00 Z
+type: GET
+HTTP: '1.0'
+url: '/toc.html'
+"
+    ;; NOTE forward-page/backward behavior is different between older Emacs(< 28) and newer ones
+    ;; when the cursor is on the page delimiter
+    (forward-page)
+    (should (= (line-number-at-pos) 3))
+    (forward-page)
+    (should (= (line-number-at-pos) 8))
+    (backward-page)
+    (should (= (line-number-at-pos) 3))))
+
 (provide 'yaml-mode-test)
 
 ;;; yaml-mode-test.el ends here
