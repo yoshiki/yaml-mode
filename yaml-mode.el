@@ -222,6 +222,7 @@ that key is pressed to begin a block literal."
   :syntax-table yaml-mode-syntax-table
   (set (make-local-variable 'comment-start) "# ")
   (set (make-local-variable 'comment-start-skip) "#+ *")
+  (set (make-local-variable 'comment-end) "")
   (set (make-local-variable 'indent-line-function) 'yaml-indent-line)
   (set (make-local-variable 'indent-tabs-mode) nil)
   (set (make-local-variable 'fill-paragraph-function) 'yaml-fill-paragraph)
