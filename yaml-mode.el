@@ -191,6 +191,7 @@ that key is pressed to begin a block literal."
     (define-key map "-" 'yaml-electric-dash-and-dot)
     (define-key map "." 'yaml-electric-dash-and-dot)
     (define-key map (kbd "DEL") 'yaml-electric-backspace)
+    (define-key map [remap backward-up-list] #'yaml-backward-up-list)
     map)
   "Keymap used in `yaml-mode' buffers.")
 
@@ -375,6 +376,28 @@ back-dent the line by `yaml-indent-offset' spaces.  On reaching column
         (indent-line-to need)))
     (if (< (current-column) (current-indentation))
         (forward-to-indentation 0))))
+
+(defun yaml-backward-up-list (arg)
+  "Move up to the ARGth parent element."
+  (interactive "p")
+  (unless (<= arg 0)
+    (let ((ppss (syntax-ppss)))
+      (if (elt ppss 3)
+          ;; Move out of a string.
+          (goto-char (elt ppss 8))
+        (condition-case err
+            ;; Move up in a list.
+            (backward-up-list)
+          (scan-error
+           ;; Find the nearest line with a smaller indentation level.
+           (back-to-indentation)
+           (unless (bolp)
+             (let ((col (current-column)))
+               (while (progn (previous-logical-line)
+                             (back-to-indentation)
+                             (>= (current-column) col)))))))))
+    (when (> arg 1)
+      (yaml-backward-up-list (1- arg)))))
 
 (defun yaml-electric-backspace (arg)
   "Delete characters or back-dent the current line.
