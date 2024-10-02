@@ -103,7 +103,7 @@ that key is pressed to begin a block literal."
 
 (defface yaml-tab-face
   '((((class color)) (:background "red" :foreground "red" :bold t))
-    (t (:reverse-video t)))
+    (t (:inverse-video t)))
   "Face to use for highlighting tabs in YAML files."
   :group 'faces
   :group 'yaml)
