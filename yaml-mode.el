@@ -109,7 +109,8 @@ that key is pressed to begin a block literal."
   :group 'yaml)
 
 (defcustom yaml-imenu-generic-expression
-  '((nil  "^\\(:?[a-zA-Z_-]+\\):"          1))
+  '((nil  "^\\(:?[^{}(),\s \n]+\\):"          1)
+    ("*Anchors*" "^\\s *[^{}(),\s \n]+: \\&\\([^{}(),\s \n]+\\)" 1))
   "The imenu regex to parse an outline of the yaml file."
   :type 'string
   :group 'yaml)
