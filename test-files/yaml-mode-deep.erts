@@ -1,0 +1,8 @@
+Name: test-yaml-indentation-deep
+=-=
+a:
+  foo: bar
+  bar: baz
+b:
+  1
+=-=-=

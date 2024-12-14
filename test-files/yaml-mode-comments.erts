@@ -1,0 +1,5 @@
+Name: test-yaml-indentation-comments
+=-=
+version: 1 # should not matter
+host:
+=-=-=

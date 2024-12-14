@@ -1,0 +1,7 @@
+Name: test-yaml-indentation-list-items
+=-=
+items:
+  - item1
+  - item2
+  - item3
+=-=-=
