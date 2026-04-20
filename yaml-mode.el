@@ -272,7 +272,8 @@ that key is pressed to begin a block literal."
              (sps (save-excursion (syntax-ppss (1- pt)))))
         (when (not (nth 8 sps))
           (cond
-           ((and (char-equal ?' (char-before (1- pt)))
+           ((and (char-before (1- pt))
+                 (char-equal ?' (char-before (1- pt)))
                  (char-equal ?' (char-before pt)))
             (put-text-property (- pt 2) pt
                                'syntax-table (string-to-syntax "w"))
