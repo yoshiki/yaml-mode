@@ -469,8 +469,8 @@ this will do usual adaptive fill behaviors."
   (setq-local imenu-create-index-function #'imenu-default-create-index-function)
   (setq-local imenu-generic-expression yaml-imenu-generic-expression))
 
-+;; FIXME: Why not inline `yaml-set-imenu-generic-expression' into the
-+;; major mode function?
+;; FIXME: Why not inline `yaml-set-imenu-generic-expression' into the
+;; major mode function?
 (add-hook 'yaml-mode-hook #'yaml-set-imenu-generic-expression)
 
 
