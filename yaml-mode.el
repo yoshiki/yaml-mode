@@ -218,17 +218,17 @@ that key is pressed to begin a block literal."
 (define-derived-mode yaml-mode text-mode "YAML"
   "Simple mode to edit YAML."
   (setq-local electric-indent-inhibit t) ;We can't *re*indent reliably.
-  (set (make-local-variable 'comment-start) "# ")
-  (set (make-local-variable 'comment-start-skip) "#+ *")
-  (set (make-local-variable 'comment-end) "")
-  (set (make-local-variable 'indent-line-function) #'yaml-indent-line)
-  (set (make-local-variable 'indent-tabs-mode) nil)
-  (set (make-local-variable 'fill-paragraph-function) #'yaml-fill-paragraph)
-  (set (make-local-variable 'page-delimiter) "^---\\([ \t].*\\)*\n")
+  (setq-local comment-start "# ")
+  (setq-local comment-start-skip "#+ *")
+  (setq-local comment-end "")
+  (setq-local indent-line-function #'yaml-indent-line)
+  (setq-local indent-tabs-mode nil)
+  (setq-local fill-paragraph-function #'yaml-fill-paragraph)
+  (setq-local page-delimiter "^---\\([ \t].*\\)*\n")
 
-  (set (make-local-variable 'syntax-propertize-function)
-       #'yaml-mode-syntax-propertize-function)
-  (setq font-lock-defaults '(yaml-font-lock-keywords)))
+  (setq-local syntax-propertize-function  #'yaml-mode-syntax-propertize-function)
+  (setq-local imenu-generic-expression yaml-imenu-generic-expression)
+  (setq-local font-lock-defaults '(yaml-font-lock-keywords)))
 
 
 ;; Font-lock support
@@ -463,16 +463,6 @@ this will do usual adaptive fill behaviors."
     (let ((fill-paragraph-function nil))
       (or (fill-comment-paragraph justify)
           (fill-paragraph justify region)))))
-
-(defun yaml-set-imenu-generic-expression ()
-  ;; FIXME: Why set this var to its default value?
-  (setq-local imenu-create-index-function #'imenu-default-create-index-function)
-  (setq-local imenu-generic-expression yaml-imenu-generic-expression))
-
-;; FIXME: Why not inline `yaml-set-imenu-generic-expression' into the
-;; major mode function?
-(add-hook 'yaml-mode-hook #'yaml-set-imenu-generic-expression)
-
 
 (defun yaml-mode-version ()
   "Display version of `yaml-mode'."
