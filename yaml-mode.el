@@ -6,7 +6,7 @@
 ;;         Marshall T. Vandegrift <llasram@gmail.com>
 ;; Maintainer: Vasilij Schneidermann <mail@vasilij.de>
 ;; URL: https://github.com/yoshiki/yaml-mode
-;; Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24.3"))
 ;; Keywords: data yaml
 ;; Version: 0.0.16
 
