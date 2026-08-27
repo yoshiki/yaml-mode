@@ -27,6 +27,7 @@
 
 (require 'yaml-mode)
 (require 'ert)
+(require 'imenu)
 
 ;; for version < 25
 (defconst yaml-test-font-lock-function
@@ -197,6 +198,19 @@ url: '/toc.html'
     (should (= (line-number-at-pos) 8))
     (backward-page)
     (should (= (line-number-at-pos) 3))))
+
+(ert-deftest imenu/create-index ()
+  "Create YAML index."
+  (yaml-test-string "name: Tom
+age: 83
+:foo: bar
+AAA-BBB_1.2.3: foo
+"
+    (let ((headers (mapcar #'car (funcall imenu-create-index-function))))
+      (should (member "name" headers))
+      (should (member "age" headers))
+      (should (member ":foo" headers))
+      (should (member "AAA-BBB_1.2.3" headers)))))
 
 (provide 'yaml-mode-test)
 
