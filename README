@@ -8,7 +8,7 @@ NAME
     yaml-mode - Simple major mode to edit YAML file for emacs
 
 REQUIREMENTS
-    Emacs 24.1
+    Emacs 24.3
 
 SYNOPSIS
     To install, just drop this file into a directory in your
